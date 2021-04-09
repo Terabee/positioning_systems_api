@@ -19,6 +19,7 @@ set(project_config_out "${CMAKE_CURRENT_BINARY_DIR}/positioning_systems_apiConfi
 set(config_targets_file_serial_communication "serial_communication.cmake")
 set(config_targets_file_follow_me_driver "follow_me_driver.cmake")
 set(config_targets_file_rtls_driver "rtls_driver.cmake")
+set(config_targets_file_logger "logger.cmake")
 set(version_config_file "${CMAKE_CURRENT_BINARY_DIR}/positioning_systems_apiConfigVersion.cmake")
 set(export_dest_dir "lib/cmake/positioning_systems_api")
 
