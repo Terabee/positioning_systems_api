@@ -25,14 +25,7 @@ install(DIRECTORY include/
 )
 
 install(TARGETS ${LIB_NAME}
-  EXPORT ${LIB_NAME}
+  EXPORT ${positioning_systems_api_targets}
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   COMPONENT libraries
-)
-
-install(EXPORT ${LIB_NAME}
-  DESTINATION "${export_dest_dir}"
-  NAMESPACE positioning_systems_api::
-  FILE ${config_targets_file_serial_communication}
-  COMPONENT configs
 )

@@ -16,10 +16,7 @@ option(BUILD_EXAMPLES "Build short example binaries" ON)
 include(GNUInstallDirs)
 set(project_config_in "${CMAKE_CURRENT_LIST_DIR}/cmake/positioning_systems_apiConfig.cmake.in")
 set(project_config_out "${CMAKE_CURRENT_BINARY_DIR}/positioning_systems_apiConfig.cmake")
-set(config_targets_file_serial_communication "serial_communication.cmake")
-set(config_targets_file_follow_me_driver "follow_me_driver.cmake")
-set(config_targets_file_rtls_driver "rtls_driver.cmake")
-set(config_targets_file_logger "logger.cmake")
+set(positioning_systems_api_targets "positioning_systems_apiTargets")
 set(version_config_file "${CMAKE_CURRENT_BINARY_DIR}/positioning_systems_apiConfigVersion.cmake")
 set(export_dest_dir "lib/cmake/positioning_systems_api")
 
@@ -36,8 +33,24 @@ if(BUILD_EXAMPLES)
   add_subdirectory(examples)
 endif()
 
+
+#-------------- Install ---------------#
+install(EXPORT ${positioning_systems_api_targets}
+  DESTINATION "${export_dest_dir}"
+  NAMESPACE positioning_systems_api::
+  FILE "${positioning_systems_api_targets}.cmake"
+  COMPONENT configs
+)
+
 include(CMakePackageConfigHelpers)
-configure_file("${project_config_in}" "${project_config_out}" @ONLY)
+# configure_file("${project_config_in}" "${project_config_out}" @ONLY)
+# generate the config file that is includes the exports
+configure_package_config_file(${project_config_in} ${project_config_out}
+  INSTALL_DESTINATION "${export_dest_dir}"
+  NO_SET_AND_CHECK_MACRO
+  NO_CHECK_REQUIRED_COMPONENTS_MACRO
+  )
+
 write_basic_package_version_file("${version_config_file}" COMPATIBILITY SameMajorVersion)
 
 install(FILES
