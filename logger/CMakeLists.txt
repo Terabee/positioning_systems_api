@@ -21,34 +21,25 @@ add_subdirectory(${CMAKE_BINARY_DIR}/spdlog-src
   EXCLUDE_FROM_ALL
 )
 
-set(MODULE_LIBS spdlog_header_only)
-set_target_properties(spdlog_header_only PROPERTIES EXPORT_NAME "positioning_systems_api_spdlog_header_only")
-
-add_library(${LIB_NAME}
+add_library(${LIB_NAME} SHARED
   src/logger.cpp
 )
 
 target_include_directories(${LIB_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/>
+  $<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/spdlog-src/include/>
   $<INSTALL_INTERFACE:include/>
 )
 
 target_link_libraries(${LIB_NAME} ${MODULE_LIBS})
 
-install(DIRECTORY include/
+install(DIRECTORY include/ ${CMAKE_BINARY_DIR}/spdlog-src/include/
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
   COMPONENT headers
 )
 
-install(TARGETS ${LIB_NAME} spdlog_header_only
-  EXPORT ${LIB_NAME}
+install(TARGETS ${LIB_NAME}
+  EXPORT ${positioning_systems_api_targets}
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
   COMPONENT libraries
-)
-
-install(EXPORT ${LIB_NAME}
-  DESTINATION "${export_dest_dir}"
-  NAMESPACE positioning_systems_api::
-  FILE ${config_targets_file_logger}
-  COMPONENT configs
 )

@@ -1,4 +1,6 @@
-set(config_targets_file_serial_communication @config_targets_file_serial_communication@)
-include("${CMAKE_CURRENT_LIST_DIR}/${config_targets_file_serial_communication}")
-set(config_targets_file_follow_me_driver @config_targets_file_follow_me_driver@)
-include("${CMAKE_CURRENT_LIST_DIR}/${config_targets_file_follow_me_driver}")
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(Threads)
+
+include("${CMAKE_CURRENT_LIST_DIR}/@positioning_systems_api_targets@.cmake")
