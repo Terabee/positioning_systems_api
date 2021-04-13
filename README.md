@@ -117,6 +117,7 @@ Use `cmake.exe --build . --target all -- -j` to build.
 ## Installation in the system
 ```
 sudo make install
+sudo ldconfig /usr/local/lib
 ```
 
 ## Run tests

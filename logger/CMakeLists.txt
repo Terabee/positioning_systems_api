@@ -31,6 +31,10 @@ target_include_directories(${LIB_NAME} PUBLIC
   $<INSTALL_INTERFACE:include/>
 )
 
+set_target_properties(${LIB_NAME} PROPERTIES
+  VERSION ${PACKAGE_VERSION}
+)
+
 target_link_libraries(${LIB_NAME} ${MODULE_LIBS})
 
 install(DIRECTORY include/ ${CMAKE_BINARY_DIR}/spdlog-src/include/
