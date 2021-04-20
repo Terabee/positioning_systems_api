@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12.0)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(PACKAGE_VERSION 1.5.6)
+set(PACKAGE_VERSION 1.6.0)
 project(positioning_systems_api VERSION ${PACKAGE_VERSION})
 
 if(${CMAKE_BUILD_TYPE} MATCHES "Debug")
