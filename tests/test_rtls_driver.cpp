@@ -805,8 +805,6 @@ TEST_F(RtlsDriverFixture, serializeConfigOk)
   EXPECT_TRUE(rtls_->requestConfig());
 
   std::string config = rtls_->serializeConfig();
-  std::cout << config << std::endl;
-  std::cout << expected_config_string << std::endl;
   EXPECT_TRUE(config == expected_config_string);
 }
 
