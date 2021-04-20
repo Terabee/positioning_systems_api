@@ -753,6 +753,63 @@ TEST_F(RtlsDriverFixture, trackerStreamShortLocationNotComputed)
   EXPECT_EQ(tracker_msg_.is_valid_position, false);
 }
 
+TEST_F(RtlsDriverFixture, serializeConfigOk)
+{
+  std::vector<std::string> input = {
+    "TERABEE UWB 3D RTLS Firmware Version:1.4.9",
+    "Serial ID:12345678",
+    "Function Passed.",
+    "Device Type:Tracker",
+    "Initiator Mode:Enabled",
+    "Device Priority:65535",
+    "Device Label:0x1ABE",
+    "Network ID:0xC0FE",
+    "Network Update Time[ms]:900",
+    "Auto Anchor Positioning (AAP):Enabled",
+    "Anchor Height for AAP [mm]:1234",
+    "Tracker Stream Mode:Enabled",
+    "Tracker Message Mode:Short",
+    "LED Mode:Enabled",
+    "Device Position X [mm]:5584200",
+    "Device Position Y [mm]:1400230",
+    "Device Position Z [mm]:-204501296",
+    "CONFIG:END"
+  };
+
+  std::string expected_config_string =
+    "TERABEE UWB 3D RTLS Firmware Version:1.4.9\n"
+    "Serial ID:12345678\n"
+    "Device Type:Tracker\n"
+    "Initiator Mode:Enabled\n"
+    "Device Priority:65535\n"
+    "Network ID:0xC0FE\n"
+    "Device Label:0x1ABE\n"
+    "Network Update Time[ms]:900\n"
+    "Auto Anchor Positioning (AAP):Enabled\n"
+    "Anchor Height for AAP [mm]:1234\n"
+    "Tracker Stream Mode:Enabled\n"
+    "Tracker Message Mode:Short\n"
+    "LED Mode:Enabled\n"
+    "Device Position X [mm]:5584200\n"
+    "Device Position Y [mm]:1400230\n"
+    "Device Position Z [mm]:-204501296\n";
+
+  EXPECT_CALL(*serialInterface_, readline(_, _))
+    .WillRepeatedly(Invoke(
+       [&input](size_t, char) {
+         std::string line = input.front();
+         input.erase(input.begin());
+         return line;
+       }));
+
+  EXPECT_TRUE(rtls_->requestConfig());
+
+  std::string config = rtls_->serializeConfig();
+  std::cout << config << std::endl;
+  std::cout << expected_config_string << std::endl;
+  EXPECT_TRUE(config == expected_config_string);
+}
+
 } // namespace terabee
 
 int main(int argc, char **argv)

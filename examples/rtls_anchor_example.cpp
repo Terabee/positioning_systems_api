@@ -47,6 +47,8 @@ int main(int argc, char **argv)
   rtls_device.enableLED();
   rtls_device.requestConfig();
   terabee::RtlsDevice::config_t device_configuration = rtls_device.getConfig();
+  std::string serialized_config = rtls_device.serializeConfig();
+  logger->info(serialized_config);
 
   return serial_port->close() ? 0 : -1;
 }

@@ -135,6 +135,8 @@ public:
   bool setTrackerMessageLong();
   bool enableTrackerStream();
   void disableTrackerStream();
+
+  std::string serializeConfig() const;
   config_t getConfig() const { return readback_config_; }
   static std::vector<std::string> splitString(const std::string &input_line, char delimiter);
 

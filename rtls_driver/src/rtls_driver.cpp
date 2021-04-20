@@ -397,6 +397,53 @@ void RtlsDevice::disableTrackerStream()
   return;
 }
 
+std::string RtlsDevice::serializeConfig() const
+{
+  std::stringstream stream;
+  stream << std::hex << std::uppercase << readback_config_.network_id;
+  std::string network_id_str = "0x" + stream.str();
+  stream.str(std::string());
+  stream << std::hex << std::uppercase << readback_config_.label;
+  std::string label_str = "0x" + stream.str();
+  stream.str(std::string());
+
+  std::string config;
+  config += PARAM_TO_STRING.at(device_params::fw_version) + ":" +
+    readback_config_.fw_version + "\n";
+  config += PARAM_TO_STRING.at(device_params::serial_id) + ":" +
+    readback_config_.serial_id + "\n";
+  config += PARAM_TO_STRING.at(device_params::type) + ":" +
+    (readback_config_.type == device_type::anchor ? "Anchor" : "Tracker") + "\n";
+  config += PARAM_TO_STRING.at(device_params::is_initiator) + ":" +
+    (readback_config_.is_initiator ? "Enabled" : "Disabled") + "\n";
+  config += PARAM_TO_STRING.at(device_params::priority) + ":" +
+    std::to_string(readback_config_.priority) + "\n";
+  config += PARAM_TO_STRING.at(device_params::network_id) + ":" +
+    network_id_str + "\n";
+  config += PARAM_TO_STRING.at(device_params::label) + ":" +
+    label_str + "\n";
+  config += PARAM_TO_STRING.at(device_params::update_time) + ":" +
+    std::to_string(readback_config_.update_time) + "\n";
+  config += PARAM_TO_STRING.at(device_params::is_auto_anchor_positioning) + ":" +
+    (readback_config_.is_auto_anchor_positioning ? "Enabled" : "Disabled") + "\n";
+  config += PARAM_TO_STRING.at(device_params::anchor_height) + ":" +
+    std::to_string(readback_config_.anchor_height) + "\n";
+  config += PARAM_TO_STRING.at(device_params::is_tracker_stream_mode) + ":" +
+    (readback_config_.is_tracker_stream_mode ? "Enabled" : "Disabled") + "\n";
+  config += PARAM_TO_STRING.at(device_params::tracker_message_mode) + ":" +
+    (readback_config_.tracker_message_mode == tracker_msg_mode::msg_long ? "Long" : "Short") + "\n";
+  config += PARAM_TO_STRING.at(device_params::is_led_enabled) + ":" +
+    (readback_config_.is_led_enabled ? "Enabled" : "Disabled") + "\n";
+  config += PARAM_TO_STRING.at(device_params::x) + ":" +
+    std::to_string(readback_config_.x) + "\n";
+  config += PARAM_TO_STRING.at(device_params::y) + ":" +
+    std::to_string(readback_config_.y) + "\n";
+  config += PARAM_TO_STRING.at(device_params::z) + ":" +
+    std::to_string(readback_config_.z) + "\n";
+
+  return config;
+}
+
 bool RtlsDevice::send16bDataCommand(cmd_header header, uint16_t data)
 {
   std::array<uint8_t, CMD_16B_DATA_LENGTH> write_buffer = {
